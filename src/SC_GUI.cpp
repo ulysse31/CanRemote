@@ -42,11 +42,6 @@ void		key_left()
 
 }
 
-void		key_right()
-{
-
-}
-
 void		key_center()
 {
   // exec here
@@ -71,6 +66,11 @@ void		key_center()
     }
   RemoteGUI.setUpdate();
   delay(1000);
+}
+
+void		key_right()
+{
+  key_center();
 }
 
 t_keypresscmd       gl_keypresscmd[] =
