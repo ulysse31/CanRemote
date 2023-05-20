@@ -1,5 +1,5 @@
 # CanRemote
-LoRa based remote control for sending messages to a CAN-Bus enabled car, equiped with a LoRa receiver.
+LoRa based remote control for sending messages to a CAN-Bus enabled car, equiped with a LoRa receiver.  
 This project uses the following parts :
 
 * A LuatOS ESP32-C3 board (for controller)
