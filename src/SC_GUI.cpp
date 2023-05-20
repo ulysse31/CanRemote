@@ -44,28 +44,34 @@ void		key_left()
 
 void		key_center()
 {
+  bool		ret;
   // exec here
+  RemoteGUI.screen()->fillScreen(BLACK_COLOR);
+  RemoteGUI.screen()->setCursor(0, 0);
+  ret = shellScreen->runLine(RemoteGUI.activeMenu()->cvalue());
+  RemoteGUI.waitForKeyPress(1000);
+  // show final return result
   RemoteGUI.screen()->fillScreen(BLACK_COLOR);
   RemoteGUI.screen()->setCursor(((14 - RemoteGUI.activeMenu()->key().length()) * 6)/2, 48);
   RemoteGUI.screen()->setTextColor(WHITE_COLOR);
   RemoteGUI.screen()->setTextSize(1);
   RemoteGUI.screen()->println(RemoteGUI.activeMenu()->key());
-  if (shell->runLine(RemoteGUI.activeMenu()->cvalue()))
+  if (ret)
     {
       RemoteGUI.screen()->setCursor(14, 96);
-      RemoteGUI.screen()->setTextColor(RED_COLOR);
+      RemoteGUI.screen()->setTextColor(BLUE_COLOR);
       RemoteGUI.screen()->setTextSize(2);
       RemoteGUI.screen()->println("OK !!");
     }
   else
     {
       RemoteGUI.screen()->setCursor(14, 96);
-      RemoteGUI.screen()->setTextColor(BLUE_COLOR);
+      RemoteGUI.screen()->setTextColor(RED_COLOR);
       RemoteGUI.screen()->setTextSize(2);
       RemoteGUI.screen()->println("KO !!");
     }
   RemoteGUI.setUpdate();
-  delay(1000);
+  delay(500);
 }
 
 void		key_right()
@@ -136,6 +142,25 @@ SC_GUI::init()
   _forceUpdate = true;
   _lastAction = 0;
   return (true);
+}
+
+unsigned int
+SC_GUI::waitForKeyPress(unsigned long timeout)
+{
+  unsigned int	res;
+  unsigned long	time;
+
+  actionPin = 0;
+  time = millis();
+  while (true)
+    if (actionPin != 0 || (timeout && (millis() - time > timeout)))
+      {
+	res = actionPin;
+	actionPin = 0;
+	return (res);
+      }
+    else
+      delay(10);
 }
 
 void

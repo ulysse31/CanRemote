@@ -3,8 +3,8 @@
 
 
 // Endianness Fun :p
-# define RED_COLOR	ST77XX_RED
-# define BLUE_COLOR	ST77XX_BLUE
+# define RED_COLOR	ST77XX_BLUE
+# define BLUE_COLOR	ST77XX_RED
 # define BLACK_COLOR	ST77XX_BLACK
 # define WHITE_COLOR	ST77XX_WHITE
 # define DGREY_COLOR	0x7BEF
@@ -18,6 +18,7 @@ class			SC_GUI
   bool			refresh();
   void			setUpdate(bool update = true) { _forceUpdate = update; }
   void			interpreteAction();
+  unsigned int		waitForKeyPress(unsigned long timeout = 0);
   cfgNode *		activeMenu() { return (_active); }
   void			setActive(cfgNode *p) { _active = p; }
   Adafruit_ST7735	*screen() { return (_tft); }
