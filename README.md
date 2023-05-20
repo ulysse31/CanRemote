@@ -17,16 +17,16 @@ https://oshwlab.com/ulysse31/canremotebrick
 
 This DEV version do NOT uses any PCB *on its own*, all parts are actually soldered with wires and tapped together
 
-A final version is being built, it will NOT use the Air101-LCD, and this for power-consumption reason.
-The Air101-LCD is a tft, which, consumes already a lot more than an OLED screen, but even worse : in combination with the LuatOS ESP32-C3 board (fixed as a shield)
-IT IS IMPOSSIBLE TO POWER OFF THE BACKLIGHT OF THE TFT => which is of course a total no-go ...
+A final version is being built, it will NOT use the Air101-LCD, and this for power-consumption reason.  
+The Air101-LCD is a tft, which, consumes already a lot more than an OLED screen, but even worse : in combination with the LuatOS ESP32-C3 board (fixed as a shield)  
+IT IS IMPOSSIBLE TO POWER OFF THE BACKLIGHT OF THE TFT => which is of course a total no-go ...  
 
-So the final version will use a 4 pin I2C OLED screen.
+So the final version will use a 4 pin I2C OLED screen.  
 
-PCB + Schematics for the final version is available here :
+PCB + Schematics for the final version is available here:  
 
 https://oshwlab.com/ulysse31/canremotebrickv2_copy
 
-Remote Control that goes in par with CanCarControl project :
+Remote Control that goes in par with CanCarControl project:  
 
 https://github.com/ulysse31/CanCarControl
