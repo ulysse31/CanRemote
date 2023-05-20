@@ -1,3 +1,9 @@
 # CanRemote
- CanBus oriented remote control: goes in par with CanCarControl 
+ Remote Control that goes in par with CanCarControl project
+ 
+ Board + schematics are available here :
+ 
+ https://oshwlab.com/ulysse31/canremotebrickv2_copy
+ 
+ 
  
