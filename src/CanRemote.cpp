@@ -21,6 +21,8 @@ CanRemote::init()
   Serial.println("####################### CanRemote INIT #######################");
   RemoteGUI.init();
   shell = new espShell(&Serial);
+  SCSerial.begin(RemoteGUI.screen(), &Serial);
+  shellScreen = new espShell(&SCSerial);
   //shellLoRa = new espShell(&Serial1, false, true);
 }
 

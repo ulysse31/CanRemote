@@ -20,6 +20,7 @@
 # include "xmodem_receiver.h"
 # include "cppfix.h"
 # include "SC_GUI.h"
+# include "tftSerial.h"
 
 # define FORMAT_SPIFFS_IF_FAILED true
 
@@ -117,6 +118,7 @@ espShell *		shellScreen;
 espShell *		shellLoRa;
 unsigned long		LastActivity;
 SC_GUI			RemoteGUI;
+tftSerial		SCSerial;
 unsigned int		actionPin;
 #  else
 extern ESPMoticsCfg		CanRemoteCfg;
@@ -127,6 +129,7 @@ extern espShell *		shellScreen;
 extern espShell *		shellLoRa;
 extern unsigned long		LastActivity;
 extern SC_GUI			RemoteGUI;
+extern tftSerial		SCSerial;
 extern unsigned int		actionPin;
 # endif
 
