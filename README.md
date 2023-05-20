@@ -1,11 +1,12 @@
 # CanRemote
 LoRa based remote control for sending messages to a CAN-Bus enabled car, equiped with a LoRa receiver.
 This project uses the following parts :
--A LuatOS ESP32-C3 board (for controller)
--A LuatOS Air101-LCD (for dev version only ! will change in the future)
--A IP5306 power module
--A E220-400T22D LoRa Module
--A USB-C female connector (power goes to IP5306, data to ESP32-C3)
+
+* A LuatOS ESP32-C3 board (for controller)
+* A LuatOS Air101-LCD (for dev version only ! will change in the future)
+* A IP5306 power module
+* A E220-400T22D LoRa Module
+* A USB-C female connector (power goes to IP5306, data to ESP32-C3)
  
 ## This Code is for now for the DEV board version
  
