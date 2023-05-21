@@ -38,7 +38,10 @@ bool		menu_load(Stream *s, char **args)
       return (false);
     }
   RemoteGUI.setActive(Menu.startNode());
+  LastActivity = millis();
+  RemoteGUI.setUpdate();
   RemoteGUI.refresh();
+  delay(1000);
   return (true);
 }
 

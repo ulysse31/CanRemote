@@ -7,6 +7,7 @@ bool	simulatekey(espShell *sh, Stream *s, char **args)
       s->println("Usage: simulatekey <up|down|right|center>");
       return (true);
     }
+  RemoteGUI.setLastAction(0);
   if (strcmp(args[1], "up") == 0)
     return ((actionPin = KEY_UP));
   if (strcmp(args[1], "down") == 0)
@@ -28,6 +29,7 @@ bool	waitforkey(espShell *sh, Stream *s, char **args)
   timeout = (args[1] ? strtoul(args[1],0, 10) : 0);
   actionPin = 0;
   time = millis();
+  RemoteGUI.enableInterrupts();
   while (true)
     if (actionPin != 0 || (timeout && (millis() - time > timeout)))
       {
@@ -37,5 +39,6 @@ bool	waitforkey(espShell *sh, Stream *s, char **args)
       }
     else
       delay(10);
+  RemoteGUI.disableInterrupts();
   return (true);
 }

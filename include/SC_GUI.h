@@ -18,6 +18,9 @@ class			SC_GUI
   bool			refresh();
   void			setUpdate(bool update = true) { _forceUpdate = update; }
   void			interpreteAction();
+  void			enableInterrupts();
+  void			disableInterrupts();
+  bool			setLastAction(unsigned int action) { _lastAction = action; return (true); }			
   unsigned int		waitForKeyPress(unsigned long timeout = 0);
   cfgNode *		activeMenu() { return (_active); }
   void			setActive(cfgNode *p) { _active = p; }
@@ -27,6 +30,8 @@ private:
   cfgNode		*_active;
   bool			_forceUpdate;
   unsigned int		_lastAction;
+  unsigned int		_action;
+  bool			_interruptsEnabled;
 };
 
 #endif // !__SC_GUI_H__ //

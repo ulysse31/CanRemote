@@ -119,6 +119,36 @@ SC_GUI::~SC_GUI()
 
 }
 
+
+void
+SC_GUI::enableInterrupts()
+{
+  if (_interruptsEnabled)
+    return ;
+  attachInterrupt(KEY_UP, press_up, RISING);
+  attachInterrupt(KEY_DOWN, press_down, RISING);
+  attachInterrupt(KEY_LEFT, press_left, RISING);
+  attachInterrupt(KEY_RIGHT, press_right, RISING);
+  attachInterrupt(KEY_CENTER, press_center, RISING);
+  actionPin = 0;
+  _interruptsEnabled = true;
+}
+
+void
+SC_GUI::disableInterrupts()
+{
+  if (_interruptsEnabled == false)
+    return ;
+  detachInterrupt(KEY_UP);
+  detachInterrupt(KEY_DOWN);
+  detachInterrupt(KEY_LEFT);
+  detachInterrupt(KEY_RIGHT);
+  detachInterrupt(KEY_CENTER);
+  actionPin = 0;
+  _forceUpdate = false;
+  _interruptsEnabled = false;
+}
+
 bool
 SC_GUI::init()
 {
@@ -133,14 +163,11 @@ SC_GUI::init()
   _tft->setRotation(2);
   _tft->setTextWrap(false); // Allow text to run off right edge
   _tft->fillScreen(BLACK_COLOR);
-  attachInterrupt(KEY_UP, press_up, RISING);
-  attachInterrupt(KEY_DOWN, press_down, RISING);
-  attachInterrupt(KEY_LEFT, press_left, RISING);
-  attachInterrupt(KEY_RIGHT, press_right, RISING);
-  attachInterrupt(KEY_CENTER, press_center, RISING);
+  this->enableInterrupts();
   _active = Menu.startNode();
   _forceUpdate = true;
   _lastAction = 0;
+  _action = 0;
   return (true);
 }
 
@@ -150,7 +177,7 @@ SC_GUI::waitForKeyPress(unsigned long timeout)
   unsigned int	res;
   unsigned long	time;
 
-  actionPin = 0;
+  this->enableInterrupts();
   time = millis();
   while (true)
     if (actionPin != 0 || (timeout && (millis() - time > timeout)))
@@ -161,17 +188,18 @@ SC_GUI::waitForKeyPress(unsigned long timeout)
       }
     else
       delay(10);
+  this->disableInterrupts();
 }
 
 void
 SC_GUI::interpreteAction()
 {
   for (int i = 0; gl_keypresscmd[i].key != 0; i++)
-    if (actionPin == gl_keypresscmd[i].key)
-    {
-      gl_keypresscmd[i].fct();
-      break ;
-    }
+    if (_action == gl_keypresscmd[i].key)
+      {
+	gl_keypresscmd[i].fct();
+	break ;
+      }
 }
 
 bool
@@ -184,6 +212,8 @@ SC_GUI::refresh()
 
   if ((actionPin && (millis() - LastActivity > 200 || _lastAction != actionPin)) || _forceUpdate == true)
     {
+      _action = actionPin;
+      this->disableInterrupts();
       if (!(_forceUpdate))
 	this->interpreteAction();
       _tft->fillScreen(BLACK_COLOR);
@@ -200,7 +230,9 @@ SC_GUI::refresh()
       if (_forceUpdate)
 	_forceUpdate = false;
       LastActivity = millis();
-      _lastAction = actionPin;
+      _lastAction = _action;
+      _action = 0;
+      this->enableInterrupts();
     }
   actionPin = 0;
   return (true);
