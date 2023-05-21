@@ -49,29 +49,29 @@ void		key_center()
   RemoteGUI.screen()->fillScreen(BLACK_COLOR);
   RemoteGUI.screen()->setCursor(0, 0);
   ret = shellScreen->runLine(RemoteGUI.activeMenu()->cvalue());
-  RemoteGUI.waitForKeyPress(1000);
+  //RemoteGUI.waitForKeyPress(1000);
   // show final return result
   RemoteGUI.screen()->fillScreen(BLACK_COLOR);
-  RemoteGUI.screen()->setCursor(((14 - RemoteGUI.activeMenu()->key().length()) * 6)/2, 48);
-  RemoteGUI.screen()->setTextColor(WHITE_COLOR);
-  RemoteGUI.screen()->setTextSize(1);
-  RemoteGUI.screen()->println(RemoteGUI.activeMenu()->key());
-  if (ret)
-    {
-      RemoteGUI.screen()->setCursor(14, 96);
-      RemoteGUI.screen()->setTextColor(BLUE_COLOR);
-      RemoteGUI.screen()->setTextSize(2);
-      RemoteGUI.screen()->println("OK !!");
-    }
-  else
-    {
-      RemoteGUI.screen()->setCursor(14, 96);
-      RemoteGUI.screen()->setTextColor(RED_COLOR);
-      RemoteGUI.screen()->setTextSize(2);
-      RemoteGUI.screen()->println("KO !!");
-    }
-  RemoteGUI.setUpdate();
-  delay(500);
+  // RemoteGUI.screen()->setCursor(((14 - RemoteGUI.activeMenu()->key().length()) * 6)/2, 48);
+  // RemoteGUI.screen()->setTextColor(WHITE_COLOR);
+  // RemoteGUI.screen()->setTextSize(1);
+  // RemoteGUI.screen()->println(RemoteGUI.activeMenu()->key());
+  // if (ret)
+  //   {
+  //     RemoteGUI.screen()->setCursor(14, 96);
+  //     RemoteGUI.screen()->setTextColor(BLUE_COLOR);
+  //     RemoteGUI.screen()->setTextSize(2);
+  //     RemoteGUI.screen()->println("OK !!");
+  //   }
+  // else
+  //   {
+  //     RemoteGUI.screen()->setCursor(14, 96);
+  //     RemoteGUI.screen()->setTextColor(RED_COLOR);
+  //     RemoteGUI.screen()->setTextSize(2);
+  //     RemoteGUI.screen()->println("KO !!");
+  //   }
+  // RemoteGUI.setUpdate();
+  // delay(500);
 }
 
 void		key_right()

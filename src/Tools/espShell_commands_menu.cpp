@@ -7,17 +7,59 @@ typedef struct	s_menucmd
 }		t_menucmd;
 
 
+bool		menu_load(Stream *s, char **args)
+{
+  String	line;
+  
+  if (args[2] == 0)
+    {
+      s->println("Usage: menu load <cfgfile>");
+      return (false);
+    }
+  if (args[2][0] == '/')
+    line = args[2];
+  else
+    {
+      line = "/";
+      line += args[2];
+    }
+  if (!(SPIFFS.exists(line.c_str())))
+    {
+      s->print("Error: File ");
+      s->print(line);
+      s->println(" does not exist!");
+      return (false);
+    }
+  Menu.unloadCfg();
+  Menu.cfgFile(line.c_str());
+  if (Menu.loadCfg() == false)
+    {
+      s->println("Error loading menu");
+      return (false);
+    }
+  RemoteGUI.refresh();
+  return (true);
+}
+
 bool		menu_list(Stream *s, char **args)
 {
   cfgNode	*p;
 
+  s->print("Actual menu file: ");
+  s->print(Menu.cfgFile());
+  s->println(".");
+  s->println();
   s->println("Menu:\tCommand:");
+  s->println("(*) Active element");
+  s->println();
   for (p = Menu.startNode(); p; p = p->next())
     {
       s->print(p->key());
       s->print(":\t");
       s->print('"');
       s->print(p->value());
+      if (p == RemoteGUI.activeMenu())
+	s->print("\t*");
       s->println('"');
     }
   return (true);
@@ -120,6 +162,7 @@ bool		menu_active(Stream *s, char **args)
 
 t_menucmd	gl_menucmd[] =
   {
+    {"load", menu_load},
     {"list", menu_list},
     {"active", menu_active},
     {"get", menu_get},
@@ -134,7 +177,7 @@ bool	menu(espShell *sh, Stream *s, char **args)
 {
   if (args[1] == 0)
     {
-      s->println("Usage: menu [list|save|get <menu>|set <menu> <cmd>|del <menu>]");
+      s->println("Usage: menu [list|save|get <menu>|set <menu> <cmd>|del <menu>| load <file>]");
       return (false);
     }
   for (int i = 0; gl_menucmd[i].name; i++)
