@@ -368,6 +368,7 @@ bool		exec(espShell *sh, Stream *s, char **args)
         }
     }
   fd.close();
+  free(newline);
   return (true);
 }
 
@@ -484,26 +485,5 @@ bool	cmd_sleep(espShell *sh, Stream *s, char **args)
 bool	cmd_free(espShell *sh, Stream *s, char **args)
 {
   s->println("Free memory: " + String(esp_get_free_heap_size()) + " bytes");
-  return (true);
-}
-
-bool	waitforkey(espShell *sh, Stream *s, char **args)
-{
-  unsigned int  res;
-  unsigned long time;
-  unsigned long timeout;
-
-  timeout = (args[1] ? strtoul(args[1],0, 10) : 0);
-  actionPin = 0;
-  time = millis();
-  while (true)
-    if (actionPin != 0 || (timeout && (millis() - time > timeout)))
-      {
-        res = actionPin;
-        actionPin = 0;
-        return (true);
-      }
-    else
-      delay(10);
   return (true);
 }

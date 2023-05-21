@@ -22,6 +22,7 @@ t_cmdfunc       gl_commands[] = {
   { "sleep", "sleep status/management command", cmd_sleep },
   { "free", "show free memory", cmd_free },
   { "waitforkey", "waits for a keypress", waitforkey },
+  { "simulatekey", "simulates keypress", simulatekey },
   { "serial", "serial redirection tool", serial },
   { "exec", "execute commands from file", exec },
   { "delay", "sleeps for a specified number of milliseconds", cmd_delay },

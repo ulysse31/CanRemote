@@ -37,6 +37,7 @@ bool		menu_load(Stream *s, char **args)
       s->println("Error loading menu");
       return (false);
     }
+  RemoteGUI.setActive(Menu.startNode());
   RemoteGUI.refresh();
   return (true);
 }
@@ -58,9 +59,10 @@ bool		menu_list(Stream *s, char **args)
       s->print(":\t");
       s->print('"');
       s->print(p->value());
+      s->print('"');
       if (p == RemoteGUI.activeMenu())
-	s->print("\t*");
-      s->println('"');
+	s->print("\t(*)");
+      s->println();
     }
   return (true);
 }
