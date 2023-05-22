@@ -98,6 +98,8 @@ Example: you added a "lock" command that locks the car in the CanCarControl devi
  * Create a lock.sh file (with ed command), containing the command need to run:  
    >lorasend lock  
    >waitforkey 1000  
+
+  
   waitforkey command will create a delay that allows to see output of the lorasend on screen.  
   
 Then, either:  
