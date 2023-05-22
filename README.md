@@ -89,7 +89,7 @@ Here is a list of parameters used actually:
   | InactivityTimeout   |  num. string   | number of seconds of inactivity before going to sleep     |
   
 ## How it (concretely) works
-this "mini-system" uses variables and shell commands to do the needed actions, once you have on the receiver side (CanCarControl), setup a given action, you now want to have it on the remote, you now can :
+this "mini-system" uses variables and shell commands to do the needed actions, once you have on the receiver side (CanCarControl), setup a given action, you now want to have it on the remote, you can now :
  * check that it works via command line by running the command with lorasend  
  * add an element in the corresponding menu config file to call the command  
  * Test it ^^'  
