@@ -102,7 +102,9 @@ Example: you added a "lock" command that locks the car in the CanCarControl devi
   
 Then, either:  
  * edit the file /etc/Menu.cfg (base menu config called at boot), and add the line :  
+  
     >lock=exec lock.sh  
+  
 Or:  
  * type the commands:  
     >menu set lock "exec lock.sh"  
