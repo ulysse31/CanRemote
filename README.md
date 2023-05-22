@@ -89,10 +89,11 @@ Here is a list of parameters used actually:
   | InactivityTimeout   |  num. string   | number of seconds of inactivity before going to sleep     |
   
 ## How it (concretely) works
-this "mini-system" uses variables and shell commands to do the needed actions, once you have on the receiver (CanCarControl) side setup a given action that you want to have it on the remote, you'll to :
- * check that it works via command line by running the command with lorasend  
- * add an element in the corresponding menu config file to call the command  
- * Test it ^^'  
+this "mini-system" uses config variables and shell commands to do the needed actions, you tipycally setup config variables and "script" actions, more generally, you go thru the following steps :
+ * create an file containing can-bus to inject
+ * call a command to inject the file
+ * eventually create an alias to call easily the command with the file
+ * all done, just call on the remote lorasend "your command", and it will be run on CanCarControl
   
 Example: you added a "lock" command that locks the car in the CanCarControl device, you now want to call it on the remote:
  * Create a lock.sh file (with ed command), containing the command need to run:  
