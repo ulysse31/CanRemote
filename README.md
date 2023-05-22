@@ -96,9 +96,9 @@ this "mini-system" uses variables and shell commands to do the needed actions, o
   
 Example: you added a "lock" command that locks the car in the CanCarControl device, you now want to call it on the remote:
  * Create a lock.sh file (with ed command), containing the command need to run:  
+  
    >lorasend lock  
    >waitforkey 1000  
-
   
   waitforkey command will create a delay that allows to see output of the lorasend on screen.  
   
@@ -109,6 +109,7 @@ Then, either:
   
 Or:  
  * type the commands:  
+  
     >menu set lock "exec lock.sh"  
     >menu save  
   
