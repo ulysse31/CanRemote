@@ -90,38 +90,38 @@ Here is a list of parameters used actually:
   
 ## How it (concretely) works
 this "mini-system" uses variables and shell commands to do the needed actions, once you have on the receiver (CanCarControl) side setup a given action that you want to have it on the remote, you'll to :
- * check that it works via command line by running the command with lorasend
- * add an element in the corresponding menu config file to call the command
- * Test it ^^'
+ * check that it works via command line by running the command with lorasend  
+ * add an element in the corresponding menu config file to call the command  
+ * Test it ^^'  
   
 Example: you added a "lock" command that locks the car in the CanCarControl device, you now want to call it on the remote:
- * Create a lock.sh file (with ed command), containing the command need to run:
-   >lorasend lock
-   >waitforkey 1000
+ * Create a lock.sh file (with ed command), containing the command need to run:  
+   >lorasend lock  
+   >waitforkey 1000  
   waitforkey command will create a delay that allows to see output of the lorasend on screen.  
   
 Then, either:  
- * edit the file /etc/Menu.cfg (base menu config called at boot), and add the line :
-    >lock=exec lock.sh
-Or:
- * type the commands:
-    >menu set lock "exec lock.sh"
-    >menu save
+ * edit the file /etc/Menu.cfg (base menu config called at boot), and add the line :  
+    >lock=exec lock.sh  
+Or:  
+ * type the commands:  
+    >menu set lock "exec lock.sh"  
+    >menu save  
   
 if you restart, the device, the item "lock" will appear on screen, and clicking on it will execute the command ...  
 Here is a sample of a /etc/Menu.cfg:  
   
->lock=exec lock.sh
->unlock=exec unlock.sh
->open boot=exec openboot.sh
->warning=exec warning.sh
->ask GPS=exec askGPS.sh
->Settings=menu load /etc/Settings.cfg
->exit=sleep now
+>lock=exec lock.sh  
+>unlock=exec unlock.sh  
+>open boot=exec openboot.sh  
+>warning=exec warning.sh  
+>ask GPS=exec askGPS.sh  
+>Settings=menu load /etc/Settings.cfg  
+>exit=sleep now  
   
 As seen in the above sample, you can have sub menus by calling the command "menu load 'filename'" that will load the content of the given file as items to use by the GUI.  
 Just remember to add inside the new GUI config file an item like:  
   
->Back=menu load /etc/Menu.cfg
+>Back=menu load /etc/Menu.cfg  
   
-This will allow to come back to the initial menu ...
+This will allow to come back to the initial menu ...  
