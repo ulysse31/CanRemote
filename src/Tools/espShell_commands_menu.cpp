@@ -40,6 +40,7 @@ bool		menu_load(Stream *s, char **args)
   RemoteGUI.setActive(Menu.startNode());
   LastActivity = millis();
   RemoteGUI.setUpdate();
+  delay(500); // needed for button release ...
   RemoteGUI.refresh();
   return (true);
 }
