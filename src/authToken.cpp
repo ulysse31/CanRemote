@@ -1,4 +1,4 @@
-#include "CanRemote.h"
+#include "CanGlobal.h"
 
 char dic_table[] = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()-_+=[]{}\"':;<>,./?\\|~`";
 

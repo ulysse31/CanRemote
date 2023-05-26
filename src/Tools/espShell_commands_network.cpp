@@ -1,4 +1,4 @@
-#include "CanRemote.h"
+#include "CanGlobal.h"
 
 // bool	enable_wifi(Stream *s)
 // {

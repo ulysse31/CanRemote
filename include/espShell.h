@@ -7,41 +7,7 @@
 
 class espShell;
 
-bool	cat(espShell *sh, Stream *s, char **args);
-bool	ls(espShell *sh, Stream *s, char **args);
-bool    rm(espShell *sh, Stream *s, char **args);
-bool    cp(espShell *sh, Stream *s, char **args);
-bool    mv(espShell *sh, Stream *s, char **args);
-bool    ed(espShell *sh, Stream *s, char **args);
-bool    md5sum(espShell *sh, Stream *s, char **args);
-bool    xmreceive(espShell *sh, Stream *s, char **args);
-//bool    hexrecv(espShell *sh, Stream *s, char **args);
-bool    candump(espShell *sh, Stream *s, char **args);
-bool    canwait(espShell *sh, Stream *s, char **args);
-bool    canwrite(espShell *sh, Stream *s, char **args);
-bool    canwritefile(espShell *sh, Stream *s, char **args);
-bool    fwupdate(espShell *sh, Stream *s, char **args);
-bool    interactive(espShell *sh, Stream *s, char **args);
-bool    ifconfig(espShell *sh, Stream *s, char **args);
-bool    lorasend(espShell *sh, Stream *s, char **args);
-bool    lorasecure(espShell *sh, Stream *s, char **args);
-bool    lorashell(espShell *sh, Stream *s, char **args);
-bool    cfg(espShell *sh, Stream *s, char **args);
-bool    alias(espShell *sh, Stream *s, char **args);
-bool    menu(espShell *sh, Stream *s, char **args);
-bool    pin(espShell *sh, Stream *s, char **args);
-bool    serial(espShell *sh, Stream *s, char **args);
-bool    exec(espShell *sh, Stream *s, char **args);
-bool    cmd_delay(espShell *sh, Stream *s, char **args);
-bool    cmd_sleep(espShell *sh, Stream *s, char **args);
-bool    cmd_free(espShell *sh, Stream *s, char **args);
-bool    echo(espShell *sh, Stream *s, char **args);
-bool    waitforkey(espShell *sh, Stream *s, char **args);
-bool    simulatekey(espShell *sh, Stream *s, char **args);
-bool    restart(espShell *sh, Stream *s, char **args);
-const char * getfullpath(const char *ptr);
-void    showbuff(Stream *s, const char *title, const char *buff);
-void    showbuffhex(Stream *s, const char *title, const char *buff);
+# include "tools.h"
 
 typedef struct	s_cmdfunc
 {
@@ -61,7 +27,7 @@ typedef struct		s_menulist
 class espShell
 {
  public:
-  espShell(Stream *s, bool echo = true, bool secure = false);
+  espShell(const char *name, Stream *s, bool echo = true, bool interactive = true, bool secure = false);
   ~espShell();
   bool			authCheck();
   void			checkCmdLine();
@@ -72,20 +38,24 @@ class espShell
   bool			getYesNo(const char *Message);
   void			secure(bool secure) { _secure = secure; }
   bool			secure() { return (_secure); }
-  void			interactive(bool echo) { _echo = echo; }
-  bool			interactive() { return (_echo); }
+  void			interactive(bool interactive) { _interactive = interactive; }
+  bool			interactive() { return (_interactive); }
+  void			echo(bool echo) { _echo = echo; }
+  bool			echo() { return (_echo); }
   void			convertAliases();
   bool			runLine(const char *line);
 
 private:
-  void			_clearLine();
   bool			_readLine();
+  void			_clearLine();
   void			_prompt();
   bool			_interpreteLine();
+  String		_name;
   Stream *		_serial;
   char *		_line;
   short			_endline;
   short			_linelen;
+  bool			_interactive;
   bool			_echo;
   bool			_secure;
   t_menulist *		_actualmenu;

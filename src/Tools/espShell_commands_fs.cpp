@@ -1,4 +1,4 @@
-#include "CanRemote.h"
+#include "CanGlobal.h"
 
 bool		cat(espShell *sh, Stream *s, char **args)
 {

@@ -110,7 +110,7 @@ class Canremote;
 
 
 # ifdef _DECLARE_GLOBAL_CANREMOTE_
-ESPMoticsCfg            CanRemoteCfg(CFGFILE, '=');
+ESPMoticsCfg            CanCfg(CFGFILE, '=');
 ESPMoticsCfg            Aliases(ALIASFILE, '=');
 ESPMoticsCfg            Menu(MENUFILE, '=');
 espShell *		shell;
@@ -121,7 +121,7 @@ SC_GUI			RemoteGUI;
 tftSerial		SCSerial;
 unsigned int		actionPin;
 #  else
-extern ESPMoticsCfg		CanRemoteCfg;
+extern ESPMoticsCfg		CanCfg;
 extern ESPMoticsCfg		Aliases;
 extern ESPMoticsCfg		Menu;
 extern espShell *		shell;

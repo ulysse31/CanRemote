@@ -1,4 +1,4 @@
-#include "CanRemote.h"
+#include "CanGlobal.h"
 
 CanRemote::CanRemote()
 {
@@ -20,10 +20,10 @@ CanRemote::init()
   Serial.begin(SERIAL_DEFAULT_SPEED);
   Serial.println("####################### CanRemote INIT #######################");
   RemoteGUI.init();
-  shell = new espShell(&Serial);
+  shell = new espShell("RemoteSH", &Serial);
   SCSerial.begin(RemoteGUI.screen(), &Serial);
-  shellScreen = new espShell(&SCSerial);
-  //shellLoRa = new espShell(&Serial1, false, true);
+  shellScreen = new espShell("RemoteSH", &SCSerial);
+  //shellLoRa = new espShell("RemoteSH", &Serial1, false, true);
 }
 
 bool
@@ -93,12 +93,12 @@ CanRemote::loadCfgSerial()
   String ssid = getParam("\r\nEnter SSID: ", true);
   String passphrase = getParam("\r\nEnter Passphrase: ", true);
 
-  CanRemoteCfg.setValue("host", host.c_str());
-  CanRemoteCfg.setValue("ssid", ssid.c_str());
-  CanRemoteCfg.setValue("passphrase", passphrase.c_str());
+  CanCfg.setValue("host", host.c_str());
+  CanCfg.setValue("ssid", ssid.c_str());
+  CanCfg.setValue("passphrase", passphrase.c_str());
   Serial.setTimeout(1000);
   Serial.println("All done! Saving ...");
-  if(CanRemoteCfg.saveCfg() == true)
+  if(CanCfg.saveCfg() == true)
     Serial.println("Configuration Successfuly Saved!\n");
   else
     Serial.println("Failed to Save Configuration!\n");
@@ -109,14 +109,14 @@ CanRemote::loadCfgSerial()
 void
 CanRemote::loadConfig()
 {
-  CanRemoteCfg.loadCfg();
+  CanCfg.loadCfg();
   Aliases.loadCfg();
   Menu.loadCfg();
   RemoteGUI.setActive(Menu.startNode());
   //  if (!cfgstatus || Cfg.getValue("ssid").length() == 0)
   //loadCfgSerial();
   //Serial.print("CfgLoad:ssid:");
-  //Serial.println(CanRemoteCfg.getValue("ssid"));
+  //Serial.println(CanCfg.getValue("ssid"));
   // Connect to WiFi network
 }
 

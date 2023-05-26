@@ -1,5 +1,5 @@
 #define _DECLARE_GLOBAL_CANREMOTE_
-#include <CanRemote.h>
+#include <CanGlobal.h>
 
 void setup()
 {
@@ -15,7 +15,7 @@ void setup()
 void loop()
 {
   CanRemote.taskLoop();
-  if (CanRemoteCfg.getValue("EnableSleep") == "true" && CanRemoteCfg.getValue("InactivityTimeout") != ""
-      && (millis() - LastActivity) > (CanRemoteCfg.getValue("InactivityTimeout").toInt() * 1000))
+  if (CanCfg.getValue("EnableSleep") == "true" && CanCfg.getValue("InactivityTimeout") != ""
+      && (millis() - LastActivity) > (CanCfg.getValue("InactivityTimeout").toInt() * 1000))
     CanRemote.goToSleep();
 }

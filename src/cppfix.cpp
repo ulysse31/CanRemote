@@ -1,4 +1,4 @@
-#include "CanRemote.h"
+#include "CanGlobal.h"
 
 void	*xmalloc(size_t size)
 {

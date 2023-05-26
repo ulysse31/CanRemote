@@ -1,48 +1,17 @@
-#include "CanRemote.h"
+#include "CanGlobal.h"
 
-t_cmdfunc       gl_commands[] = {
-  { "cat", "show file content", cat },
-  { "ls", "list files", ls },
-  { "rm", "delete file", rm },
-  { "cp", "copy file", cp },
-  { "mv", "rename file", cp },
-  { "ed", "a line-per-line basic text editor", ed },  
-  { "md5sum", "calculates md5 of a file", md5sum },
-  { "xmreceive", "receive file from tty using XMODEM protocol", xmreceive },
-  //  { "candump", "CAN Dumper", candump },
-  //  { "canwait", "CAN packet waiting for specific identifiers", canwait },
-  //  { "canwrite", "CAN packet writing: from arguments", canwrite },
-  { "fwupdate", "firmware update command", fwupdate },
-  //  { "ifconfig", "show network connection states", ifconfig },
-  { "interactive", "enable/disable interactive shell parameters (echo, verbose...)", interactive },
-  { "cfg", "main config parameters editor", cfg },
-  { "alias", "alias command / shortcuts", alias },
-  { "menu", "Graphical menu command listing", menu },
-  { "pin", "pin input/output control", pin },
-  { "sleep", "sleep status/management command", cmd_sleep },
-  { "free", "show free memory", cmd_free },
-  { "echo", "echo text", echo },
-  { "waitforkey", "waits for a keypress", waitforkey },
-  { "simulatekey", "simulates keypress", simulatekey },
-  { "serial", "serial redirection tool", serial },
-  { "exec", "execute commands from file", exec },
-  { "delay", "sleeps for a specified number of milliseconds", cmd_delay },
-  { "lorasend", "send command via lora", lorasend },
-  { "lorasecure", "enable/disable auth in lorashell", lorasecure },
-  { "lorashell", "enable/disable lorashell", lorashell },
-  { "restart", "restart the device", restart },
-  {0, 0, 0}
-};
+#include "gl_commands.h"
 
-
-espShell::espShell(Stream *s, bool echo, bool secure)
+espShell::espShell(const char *name, Stream *s, bool echo, bool interactive, bool secure)
 {
   _serial = s;
   _line = 0;
   _endline = 0;
   _linelen = 16;
+  _interactive = interactive;
   _echo = echo;
   _secure = secure;
+  _name = name;
   _line = (char *)(xmalloc(sizeof(*_line) * (_linelen + 1)));
   memset(_line, 0, _linelen);
   memset(_currentPath, 0, MAX_SPIFFS_NAME_LEN);
@@ -106,13 +75,13 @@ espShell::authCheck()
   char		buff[AUTH_TOKEN_SIZE];
   authToken	car;
 
-  if (CanRemoteCfg.getValue("LoraRemoteKey") == "" || CanRemoteCfg.getValue("LoraCarKey") == ""
-      || CanRemoteCfg.getValue("LoraRemoteKey").length() != AUTH_TOKEN_SIZE
-      || CanRemoteCfg.getValue("LoraCarKey").length() != AUTH_TOKEN_SIZE)
+  if (CanCfg.getValue("LoraRemoteKey") == "" || CanCfg.getValue("LoraCarKey") == ""
+      || CanCfg.getValue("LoraRemoteKey").length() != AUTH_TOKEN_SIZE
+      || CanCfg.getValue("LoraCarKey").length() != AUTH_TOKEN_SIZE)
     return (false);
 
-  car.carKey(CanRemoteCfg.getcValue("LoraCarKey"));
-  car.remoteKey(CanRemoteCfg.getcValue("LoraRemoteKey"));
+  car.carKey(CanCfg.getcValue("LoraCarKey"));
+  car.remoteKey(CanCfg.getcValue("LoraRemoteKey"));
   car.genToken();
   car.copyToken(nounce);
   //showbuff(&Serial, "\nDEBUG: token:", nounce);
@@ -160,7 +129,8 @@ espShell::checkCmdLine()
 	  if (_echo)
 	    _serial->println("");
 	  else
-	    _serial->write(0x04);
+	    if (!_interactive)
+	      _serial->write(0x04);
 	  this->convertAliases();
 	  this->_interpreteLine();
 	}
@@ -174,7 +144,7 @@ bool
 espShell::runLine(const char *line)
 {
   bool ret;
-  
+
   if (this->_line)
     {
       free(_line);
@@ -198,7 +168,7 @@ espShell::_readLine()
       _line[_endline] = _serial->read();
       LastActivity = millis();
       if (_endline == 0 && _line[_endline] == '\n')
-	return (false);
+	  return (false);
       if (_endline == 0 && _line[_endline] == 0x08)
 	{
 	  _line[_endline] = 0;
@@ -206,7 +176,7 @@ espShell::_readLine()
 	}
       if (_line[_endline] == 0x08 && _endline > 0)
 	{
-	  if (_echo)
+	  if (_interactive)
 	    {
 	      _serial->print('\b');
 	      _serial->print(' ');
@@ -295,9 +265,11 @@ espShell::_clearLine()
 void
 espShell::_prompt()
 {
-  if (_echo)
+  if (_interactive)
     {
-      _serial->print("[RemoteSH: ");
+      _serial->print("[");
+      _serial->print(_name);
+      _serial->print(": ");
       _serial->print(_currentPath);
       _serial->print(" ]> ");
     }
@@ -312,7 +284,6 @@ espShell::_interpreteLine()
   t_cmdfunc	*f;
   bool		found = false;
   bool		quote = false;
-  bool		ret = false;
   
   if (this->_endline <= 1)
     return (false);
@@ -348,8 +319,8 @@ espShell::_interpreteLine()
   for (f = gl_commands; f && f->name; f++)
     if ((i = strcmp(f->name, args[0])) == 0)
       {
-	ret = f->fct(this, this->_serial, args);
-	if (_echo == false)
+	f->fct(this, this->_serial, args);
+	if (_interactive == false)
 	  this->_serial->write(0x04);
 	LastActivity = millis();
 	found = true;
@@ -373,9 +344,9 @@ espShell::_interpreteLine()
       _serial->print(args[0]);
       _serial->print(": ");
       _serial->println("Command not found.");
-      if (_echo == false)
-	this->_serial->write(0x04);
+      if (_interactive == false)
+        this->_serial->write(0x04);
     }
   free(args);
-  return (ret);
+  return (true);
 }

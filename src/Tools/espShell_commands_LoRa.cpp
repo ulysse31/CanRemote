@@ -1,4 +1,4 @@
-#include "CanRemote.h"
+#include "CanGlobal.h"
 
 
 bool	lorashell(espShell *sh, Stream *s, char **args)
@@ -19,7 +19,7 @@ bool	lorashell(espShell *sh, Stream *s, char **args)
       return (false);
     }
   if (strcmp(args[1], "enable") == 0)
-    shellLoRa = new espShell(&Serial1, false, true);
+    shellLoRa = new espShell("RemoteSH", &Serial1, false, true);
   else
     {
       delete shellLoRa;
@@ -74,15 +74,15 @@ bool		loraAuth(espShell *sh, Stream *s)
   char          buff[AUTH_TOKEN_SIZE];
   authToken     remote;
 
-  if (CanRemoteCfg.getValue("LoraRemoteKey") == "" || CanRemoteCfg.getValue("LoraCarKey") == ""
-      || CanRemoteCfg.getValue("LoraRemoteKey").length() != AUTH_TOKEN_SIZE
-      || CanRemoteCfg.getValue("LoraCarKey").length() != AUTH_TOKEN_SIZE)
+  if (CanCfg.getValue("LoraRemoteKey") == "" || CanCfg.getValue("LoraCarKey") == ""
+      || CanCfg.getValue("LoraRemoteKey").length() != AUTH_TOKEN_SIZE
+      || CanCfg.getValue("LoraCarKey").length() != AUTH_TOKEN_SIZE)
     {
       s->println("Incorrect Lora remote/car key setup, create LoraRemoteKey/LoraCarKey with 16 bytes key first");
       return (false);
     }
-  remote.carKey(CanRemoteCfg.getValue("LoraCarKey").c_str());
-  remote.remoteKey(CanRemoteCfg.getValue("LoraRemoteKey").c_str());
+  remote.carKey(CanCfg.getValue("LoraCarKey").c_str());
+  remote.remoteKey(CanCfg.getValue("LoraRemoteKey").c_str());
   i = 0;
   time = millis();
   while (true)
@@ -116,7 +116,7 @@ bool	lorasend(espShell *sh, Stream *s, char **args)
   unsigned int	len;
   char		c;
 
-  if (CanRemoteCfg.getValue("LoraSecure") == "true")
+  if (CanCfg.getValue("LoraSecure") == "true")
     isSecure = true;
   else
     isSecure = false;
@@ -180,7 +180,7 @@ bool	loraed(espShell *sh, Stream *s, char **args)
   String	initcmd;
   char		c;
 
-  if (CanRemoteCfg.getValue("LoraSecure") == "true")
+  if (CanCfg.getValue("LoraSecure") == "true")
     isSecure = true;
   else
     isSecure = false;
