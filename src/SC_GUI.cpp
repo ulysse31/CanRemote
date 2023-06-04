@@ -137,11 +137,11 @@ SC_GUI::init()
   pinMode(KEY_LEFT, INPUT_PULLUP);
   pinMode(KEY_RIGHT, INPUT_PULLUP);
   SPI.begin(LUATOS_SCK, LUATOS_MISO, LUATOS_MOSI, LUATOS_SS);
-  _tft = new Adafruit_ST7735(&SPI, TFT_CS, TFT_DC, TFT_RST);
-  _tft->initR(INITR_MINI160x80); // Initialize ST7735R screen
-  _tft->setRotation(2);
-  _tft->setTextWrap(false); // Allow text to run off right edge
-  _tft->fillScreen(BLACK_COLOR);
+  _display = new Adafruit_ST7735(&SPI, TFT_CS, TFT_DC, TFT_RST);
+  _display->initR(INITR_MINI160x80); // Initialize ST7735R screen
+  _display->setRotation(2);
+  _display->setTextWrap(false); // Allow text to run off right edge
+  _display->fillScreen(BLACK_COLOR);
   this->enableInterrupts();
   _active = Menu.startNode();
   _forceUpdate = true;
@@ -195,16 +195,16 @@ SC_GUI::refresh()
       this->disableInterrupts();
       if (!(_forceUpdate))
 	this->interpreteAction();
-      _tft->fillScreen(BLACK_COLOR);
+      _display->fillScreen(BLACK_COLOR);
       for (p = Menu.startNode(), k = 0; p; p = p->next(), k++)
 	;
       for (p = Menu.startNode(), i = 0; p; p = p->next(), i++)
 	{
 	  tomove = ((14 - p->key().length()) * 6) / 2;
-	  _tft->setCursor(tomove, ((10 - (k % 10)) / 2 * 16) + (i + 1) * 16);
-	  _tft->setTextColor((p == _active ? WHITE_COLOR : DGREY_COLOR));
-	  _tft->setTextSize(1);
-	  _tft->print(p->key());
+	  _display->setCursor(tomove, ((10 - (k % 10)) / 2 * 16) + (i + 1) * 16);
+	  _display->setTextColor((p == _active ? WHITE_COLOR : DGREY_COLOR));
+	  _display->setTextSize(1);
+	  _display->print(p->key());
 	}
       if (_forceUpdate)
 	_forceUpdate = false;

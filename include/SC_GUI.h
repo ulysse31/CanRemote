@@ -24,9 +24,9 @@ class			SC_GUI
   unsigned int		waitForKeyPress(unsigned long timeout = 0);
   cfgNode *		activeMenu() { return (_active); }
   void			setActive(cfgNode *p) { _active = p; }
-  Adafruit_ST7735	*screen() { return (_tft); }
+  Adafruit_ST7735	*screen() { return (_display); }
 private:
-  Adafruit_ST7735	*_tft;
+  Adafruit_ST7735	*_display;
   cfgNode		*_active;
   bool			_forceUpdate;
   unsigned int		_lastAction;

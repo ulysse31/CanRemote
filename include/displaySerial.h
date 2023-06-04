@@ -1,14 +1,14 @@
-#ifndef __TFTSERIAL_H__
-# define __TFTSERIAL_H__
+#ifndef __DISPLAYSERIAL_H__
+# define __DISPLAYSERIAL_H__
 
 
-class		tftSerial : public Stream
+class		displaySerial : public Stream
 {
  public:
-  tftSerial();
-  ~tftSerial();
+  displaySerial();
+  ~displaySerial();
   void		begin(Print *print, Stream *fallback);
-  bool		tftEnable() { return ((_tft ? true : false)); }
+  bool		displayEnable() { return ((_display ? true : false)); }
   bool		fallbackEnable() { return ((_fbserial ? true : false)); }
 
   size_t	print(const String &);
@@ -41,9 +41,9 @@ class		tftSerial : public Stream
   int		peek();
   
  private:
-  Print	*	_tft;
+  Print	*	_display;
   Stream *	_fbserial;
 };
 
-#endif // !__TFTSERIAL_H__ //
+#endif // !__DISPLAYSERIAL_H__ //
 
