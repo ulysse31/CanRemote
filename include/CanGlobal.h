@@ -2,7 +2,6 @@
 # define __CANREMOTE_H__
 
 # include <stdint.h>
-//# include <WProgram.h>
 # include <Arduino.h>
 # include <SPI.h>
 # include <FS.h>
@@ -13,8 +12,8 @@
 # include <Adafruit_SH110X.h>
 # include <Adafruit_ST7735.h>
 # include "mbedtls/aes.h"
-# include "soc/soc.h" //disable brownour problems
-# include "soc/rtc_cntl_reg.h" //disable brownour problems
+# include "soc/soc.h"
+# include "soc/rtc_cntl_reg.h"
 # include "ESPMoticsCfg.h"
 # include "authToken.h"
 # include "espShell.h"

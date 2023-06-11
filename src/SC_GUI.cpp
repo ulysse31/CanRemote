@@ -104,8 +104,16 @@ SC_GUI::enableInterrupts()
 {
   if (_interruptsEnabled)
     return ;
-  attachInterrupt(KEY_UP, press_up, RISING);
-  attachInterrupt(KEY_DOWN, press_down, RISING);
+  if (CanRemote.sided() == SIDED_LEFT)
+    {
+      attachInterrupt(KEY_UP, press_up, RISING);
+      attachInterrupt(KEY_DOWN, press_down, RISING);
+    }
+  else
+    {
+      attachInterrupt(KEY_UP, press_down, RISING);
+      attachInterrupt(KEY_DOWN, press_up, RISING);
+    }
   attachInterrupt(KEY_LEFT, press_left, RISING);
   attachInterrupt(KEY_RIGHT, press_right, RISING);
   attachInterrupt(KEY_CENTER, press_center, RISING);
