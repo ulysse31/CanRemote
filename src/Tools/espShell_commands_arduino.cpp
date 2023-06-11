@@ -6,16 +6,17 @@ typedef struct	s_genericcmd
   bool		(*fct)(Stream *s, char **args);
 }		t_genericcmd;
 
+
 bool		pin_mode(Stream *s, char **args)
 {
   String	pin;
-  
+
   if (args[2] == 0 || (args[2] && args[3] == 0))
     {
       s->println("Error: pin mode <pin_num> <INPUT|INPUT_PULLUP|OUTPUT>");
       return (false);
     }
-  if (strcmp(args[3], "INPUT") != 0 && strcmp(args[3], "INPUT_PULLUP") != 0 && strcmp(args[3], "OUTPUT") != 0)
+  if (args[3] && strcmp(args[3], "INPUT") != 0 && strcmp(args[3], "INPUT_PULLUP") != 0 && strcmp(args[3], "OUTPUT") != 0)
     {
       s->println("Error: Only use INPUT or OUTPUT mode type");
       return (false);

@@ -20,13 +20,15 @@ class			SC_GUI
   void			interpreteAction();
   void			enableInterrupts();
   void			disableInterrupts();
+  void			clearScreen();
+  void			enableSleep(bool sleep);
   bool			setLastAction(unsigned int action) { _lastAction = action; return (true); }			
   unsigned int		waitForKeyPress(unsigned long timeout = 0);
   cfgNode *		activeMenu() { return (_active); }
   void			setActive(cfgNode *p) { _active = p; }
-  Adafruit_ST7735	*screen() { return (_display); }
+  Adafruit_GFX		*screen() { return (_display); }
 private:
-  Adafruit_ST7735	*_display;
+  Adafruit_GFX		*_display;
   cfgNode		*_active;
   bool			_forceUpdate;
   unsigned int		_lastAction;

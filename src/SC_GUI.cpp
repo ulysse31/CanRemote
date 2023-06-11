@@ -46,11 +46,11 @@ void		key_center()
 {
   bool		ret;
   // exec here
-  RemoteGUI.screen()->fillScreen(BLACK_COLOR);
+  RemoteGUI.clearScreen();
   RemoteGUI.screen()->setCursor(0, 0);
   ret = shellScreen->runLine(RemoteGUI.activeMenu()->cvalue());
   // show final return result
-  RemoteGUI.screen()->fillScreen(BLACK_COLOR);
+  RemoteGUI.clearScreen();
 }
 
 void		key_right()
@@ -128,6 +128,21 @@ SC_GUI::disableInterrupts()
   _interruptsEnabled = false;
 }
 
+void
+SC_GUI::clearScreen()
+{
+  if (CanRemote.hwVersion() == HWVER2)
+    ((Adafruit_SH1107*)_display)->clearDisplay();
+  _display->fillScreen(BLACK_COLOR);
+}
+
+void
+SC_GUI::enableSleep(bool sleep)
+{
+  if (CanRemote.hwVersion() == HWVER1)
+    ((Adafruit_ST7735*)_display)->enableSleep(sleep);
+}
+
 bool
 SC_GUI::init()
 {
@@ -136,12 +151,21 @@ SC_GUI::init()
   pinMode(KEY_DOWN, INPUT_PULLUP);
   pinMode(KEY_LEFT, INPUT_PULLUP);
   pinMode(KEY_RIGHT, INPUT_PULLUP);
-  SPI.begin(LUATOS_SCK, LUATOS_MISO, LUATOS_MOSI, LUATOS_SS);
-  _display = new Adafruit_ST7735(&SPI, TFT_CS, TFT_DC, TFT_RST);
-  _display->initR(INITR_MINI160x80); // Initialize ST7735R screen
+  if (CanRemote.hwVersion() == HWVER1)
+    {
+      SPI.begin(LUATOS_SCK, LUATOS_MISO, LUATOS_MOSI, LUATOS_SS);
+      _display = new Adafruit_ST7735(&SPI, TFT_CS, TFT_DC, TFT_RST);
+      ((Adafruit_ST7735 *)_display)->initR(INITR_MINI160x80); // Initialize ST7735R screen
+    }
+  if (CanRemote.hwVersion() == HWVER2)
+    {
+      Wire.begin(LUATOS_SDA, LUATOS_SCL);
+      _display = new Adafruit_SH1107(128, 128, &Wire, -1, 1000000, 100000);
+      ((Adafruit_SH1107*)_display)->begin(0x3D, true);
+    }
   _display->setRotation(2);
   _display->setTextWrap(false); // Allow text to run off right edge
-  _display->fillScreen(BLACK_COLOR);
+  this->clearScreen();
   this->enableInterrupts();
   _active = Menu.startNode();
   _forceUpdate = true;
@@ -195,14 +219,15 @@ SC_GUI::refresh()
       this->disableInterrupts();
       if (!(_forceUpdate))
 	this->interpreteAction();
-      _display->fillScreen(BLACK_COLOR);
+      this->clearScreen();
       for (p = Menu.startNode(), k = 0; p; p = p->next(), k++)
 	;
       for (p = Menu.startNode(), i = 0; p; p = p->next(), i++)
 	{
 	  tomove = ((14 - p->key().length()) * 6) / 2;
 	  _display->setCursor(tomove, ((10 - (k % 10)) / 2 * 16) + (i + 1) * 16);
-	  _display->setTextColor((p == _active ? WHITE_COLOR : DGREY_COLOR));
+	  if (CanRemote.hwVersion() == HWVER1)
+	    _display->setTextColor((p == _active ? WHITE_COLOR : DGREY_COLOR));
 	  _display->setTextSize(1);
 	  _display->print(p->key());
 	}

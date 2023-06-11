@@ -13,9 +13,25 @@ CanRemote::~CanRemote()
 void
 CanRemote::init()
 {
+  _spiffsstatus = SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED);
+  CanCfg.loadCfg();
+  Aliases.loadCfg();
+  Menu.loadCfg();
+  if (CanCfg.getValue("HWVersion") == "V2")
+    _hwVersion = HWVER2;
+  else
+    _hwVersion = HWVER1;
+  if (CanCfg.getValue("Sided") == "Left")
+    _sided = SIDED_LEFT;
+  else
+    _sided = SIDED_RIGHT;
   pinMode(E220_PWR, OUTPUT);
   digitalWrite(E220_PWR, HIGH);
-  _spiffsstatus = SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED);
+  if (_hwVersion == HWVER2)
+    {
+      pinMode(E220_EN, OUTPUT);
+      digitalWrite(E220_EN, LOW);
+    }
   Serial1.begin(LORA_SETUP_BAUD, SERIAL_8N1, LUATOS_RX1, LUATOS_TX1);
   Serial.begin(SERIAL_DEFAULT_SPEED);
   Serial.println("####################### CanRemote INIT #######################");
@@ -109,9 +125,9 @@ CanRemote::loadCfgSerial()
 void
 CanRemote::loadConfig()
 {
-  CanCfg.loadCfg();
-  Aliases.loadCfg();
-  Menu.loadCfg();
+  //  CanCfg.loadCfg();
+  //  Aliases.loadCfg();
+  //  Menu.loadCfg();
   RemoteGUI.setActive(Menu.startNode());
   //  if (!cfgstatus || Cfg.getValue("ssid").length() == 0)
   //loadCfgSerial();
@@ -144,14 +160,13 @@ CanRemote::taskLoop()
 void
 CanRemote::goToSleep()
 {
-
    if (esp_deep_sleep_enable_gpio_wakeup( 1 << KEY_CENTER, ESP_GPIO_WAKEUP_GPIO_LOW) != ESP_OK)
      {
        Serial.println("\nError: Could not enable KEY_CENTER wakeup pin");
        LastActivity = millis();
        return ;
      }
-   RemoteGUI.screen()->enableSleep(true);
+   RemoteGUI.enableSleep(true);
    Serial.println("\n****************\n* Inactivity Timeout\n*  Going to Sleep\n****************\n");
    esp_deep_sleep_start();
 }
