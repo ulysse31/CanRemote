@@ -159,6 +159,13 @@ SC_GUI::init()
   pinMode(KEY_DOWN, INPUT_PULLUP);
   pinMode(KEY_LEFT, INPUT_PULLUP);
   pinMode(KEY_RIGHT, INPUT_PULLUP);
+  if (CanRemote.quickAction())
+    {
+      if (digitalRead(KEY_CENTER) == LOW)
+	CanRemote.quickAction(false);
+      else
+	CanRemote.quickAction(true);
+    }
   if (CanRemote.hwVersion() == HWVER1)
     {
       SPI.begin(LUATOS_SCK, LUATOS_MISO, LUATOS_MOSI, LUATOS_SS);
@@ -174,7 +181,7 @@ SC_GUI::init()
   _display->setRotation(2);
   _display->setTextWrap(false); // Allow text to run off right edge
   this->clearScreen();
-  this->enableInterrupts();
+  //this->enableInterrupts();
   _active = Menu.startNode();
   _forceUpdate = true;
   _lastAction = 0;
@@ -221,6 +228,11 @@ SC_GUI::refresh()
   int		tomove;
   cfgNode       *p;
 
+  if (CanRemote.quickAction() == true)
+    {
+      key_center();
+      return (true);
+    }
   if ((actionPin && (millis() - LastActivity > 200 || _lastAction != actionPin)) || _forceUpdate == true)
     {
       _action = actionPin;
@@ -240,7 +252,11 @@ SC_GUI::refresh()
 	  _display->print(p->key());
 	}
       if (_forceUpdate)
-	_forceUpdate = false;
+	{
+	  while (digitalRead(KEY_CENTER) == LOW)
+	    delay(1);
+	  _forceUpdate = false;
+	}
       LastActivity = millis();
       _lastAction = _action;
       _action = 0;

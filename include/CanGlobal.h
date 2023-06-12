@@ -122,6 +122,8 @@ public:
   void			init();
   uint8_t		hwVersion() { return (_hwVersion); }
   uint8_t		sided() { return (_sided); }
+  bool			quickAction() { return (_quickAction); }
+  void			quickAction(bool action) { _quickAction = action; }
   void			loadConfig();
   void			loadServices();
   void			taskLoop();
@@ -131,6 +133,7 @@ private:
   bool			_spiffsstatus;
   uint8_t		_hwVersion;
   uint8_t		_sided;
+  bool			_quickAction;
 };
 
 # ifdef _DECLARE_GLOBAL_CANREMOTE_

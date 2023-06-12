@@ -9,13 +9,14 @@ void setup()
   LastActivity = millis();
   CanRemote.init();
   CanRemote.loadConfig();
-  CanRemote.loadServices();
+  if (CanRemote.quickAction() == false)
+    CanRemote.loadServices();
 }
 
 void loop()
 {
   CanRemote.taskLoop();
   if (CanCfg.getValue("EnableSleep") == "true" && CanCfg.getValue("InactivityTimeout") != ""
-      && (millis() - LastActivity) > (CanCfg.getValue("InactivityTimeout").toInt() * 1000))
+      && (millis() - LastActivity) > (CanCfg.getValue("InactivityTimeout").toInt() * 1000) || (CanRemote.quickAction() == true))
     CanRemote.goToSleep();
 }

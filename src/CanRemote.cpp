@@ -13,6 +13,10 @@ CanRemote::~CanRemote()
 void
 CanRemote::init()
 {
+  if (esp_sleep_get_wakeup_cause() == ESP_SLEEP_WAKEUP_UNDEFINED)
+    _quickAction = false;
+  else
+    _quickAction = true;
   _spiffsstatus = SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED);
   CanCfg.loadCfg();
   Aliases.loadCfg();
@@ -147,9 +151,12 @@ CanRemote::loadServices()
 void
 CanRemote::taskLoop()
 {
-  shell->checkCmdLine();
-  if (shellLoRa)
-    shellLoRa->checkCmdLine();
+  if (_quickAction == false)
+    {
+      shell->checkCmdLine();
+      if (shellLoRa)
+	shellLoRa->checkCmdLine();
+    }
   RemoteGUI.refresh();
   //  if (this->isWiFiActive())
   //   web.handleClient(); 
