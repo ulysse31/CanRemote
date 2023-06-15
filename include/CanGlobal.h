@@ -67,24 +67,8 @@
 # define KEY_RIGHT		GPIO_NUM_13
 # define KEY_CENTER		GPIO_NUM_4
 
-# ifndef DEBUGMODE
-#  define CMDSERIAL	Serial
-# endif
-
-#ifdef DEBUGMODE
-# define DBGSERIAL	Serial
-# define CMDSERIAL	DBGSERIAL
-# define DEBUGINIT	DBGSERIAL.begin(9600)
-# define PRINTDBG(x) do { DBGSERIAL.print("["); DBGSERIAL.print(__FILE__); DBGSERIAL.print(":"); DBGSERIAL.print(__LINE__); DBGSERIAL.print("] "); DBGSERIAL.println(x); } while (false)
-#else
-# define PRINTDBG(x)
-#endif
-
-# define CMDINIT	CMDSERIAL.begin(SERIAL_DEFAULT_SPEED)
-# define PRINTCMD(x) do { CMDSERIAL.print("["); CMDSERIAL.print(__FILE__); CMDSERIAL.print(":"); CMDSERIAL.print(__LINE__); CMDSERIAL.print("] "); CMDSERIAL.println(x); } while (false)
 
 class Canremote;
-
 
 
 # ifdef _DECLARE_GLOBAL_CANREMOTE_

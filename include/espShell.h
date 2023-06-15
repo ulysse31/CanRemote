@@ -1,9 +1,8 @@
 #ifndef __ESPSHELL_H__
 # define __ESPSHELL_H__
 
-// right now SPIFFS limits name len to 32 ... but keeping some room for potential future updates ^^
-// 256 should be enough ... (dos limit ?)
-# define MAX_SPIFFS_NAME_LEN		256
+// right now SPIFFS limits name len to 32 ...
+# define MAX_SPIFFS_NAME_LEN		32
 
 class espShell;
 

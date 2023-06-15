@@ -21,6 +21,8 @@ CanRemote::init()
   CanCfg.loadCfg();
   Aliases.loadCfg();
   Menu.loadCfg();
+  if (CanCfg.getValue("QuickAction") != "true")
+    _quickAction = false;
   if (CanCfg.getValue("HWVersion") == "V2")
     _hwVersion = HWVER2;
   else
@@ -129,15 +131,7 @@ CanRemote::loadCfgSerial()
 void
 CanRemote::loadConfig()
 {
-  //  CanCfg.loadCfg();
-  //  Aliases.loadCfg();
-  //  Menu.loadCfg();
   RemoteGUI.setActive(Menu.startNode());
-  //  if (!cfgstatus || Cfg.getValue("ssid").length() == 0)
-  //loadCfgSerial();
-  //Serial.print("CfgLoad:ssid:");
-  //Serial.println(CanCfg.getValue("ssid"));
-  // Connect to WiFi network
 }
 
 void
@@ -158,9 +152,7 @@ CanRemote::taskLoop()
 	shellLoRa->checkCmdLine();
     }
   RemoteGUI.refresh();
-  //  if (this->isWiFiActive())
-  //   web.handleClient(); 
-  delay(10);
+  delay(10); // main refresh tick for shell / screen ...
 }
 
 
@@ -173,6 +165,7 @@ CanRemote::goToSleep()
        LastActivity = millis();
        return ;
      }
+   RemoteGUI.clearScreen();
    RemoteGUI.enableSleep(true);
    Serial.println("\n****************\n* Inactivity Timeout\n*  Going to Sleep\n****************\n");
    esp_deep_sleep_start();

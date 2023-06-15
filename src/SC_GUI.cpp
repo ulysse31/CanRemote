@@ -181,7 +181,6 @@ SC_GUI::init()
   _display->setRotation(2);
   _display->setTextWrap(false); // Allow text to run off right edge
   this->clearScreen();
-  //this->enableInterrupts();
   _active = Menu.startNode();
   _forceUpdate = true;
   _lastAction = 0;
