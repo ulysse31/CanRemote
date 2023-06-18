@@ -16,9 +16,9 @@ This project uses the following parts :
 
 * A LuatOS ESP32-C3 board (for controller)
 * A LuatOS Air101-LCD (dev version) or SH1107 OLED display (final version)
-* A BMS with step-up module, such as : J5019 (a little big) or LX-LCBST (preferred) 
+* A power module with step-up module, such as : J5019 (a little big) or LX-LCBST (preferred) 
 * A E220-400T22D LoRa Module
-* A USB-C female connector (power goes to IP5306, data to ESP32-C3)
+* A USB-C female connector (power goes to power module, data to ESP32-C3)
 * A multi-directional wheel type button (eg: K1-1502SA-01 or other)
  
  
