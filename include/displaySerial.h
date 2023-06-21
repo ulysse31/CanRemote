@@ -39,10 +39,13 @@ class		displaySerial : public Stream
   int		available();
   int		read();
   int		peek();
+  void		flushScreen() { if (_flushfct) _flushfct(); }
+  void		(*flushFunc(void (*fct)() = 0))() { if (fct) _flushfct = fct; return (_flushfct); }
   
  private:
   Print	*	_display;
   Stream *	_fbserial;
+  void		(*_flushfct)();
 };
 
 #endif // !__DISPLAYSERIAL_H__ //

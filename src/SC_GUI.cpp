@@ -90,7 +90,7 @@ void IRAM_ATTR press_center() {
 
 SC_GUI::SC_GUI()
 {
-
+  
 }
 
 SC_GUI::~SC_GUI()
@@ -141,7 +141,10 @@ SC_GUI::clearScreen()
 {
   if (CanRemote.hwVersion() == HWVER2)
     ((Adafruit_SH1107*)_display)->clearDisplay();
-  _display->fillScreen(BLACK_COLOR);
+  else
+    _display->fillScreen(BLACK_COLOR);
+  if (CanRemote.hwVersion() == HWVER2)
+    ((Adafruit_SH1107*)_display)->display();
 }
 
 void
@@ -159,6 +162,7 @@ SC_GUI::init()
   pinMode(KEY_DOWN, INPUT_PULLUP);
   pinMode(KEY_LEFT, INPUT_PULLUP);
   pinMode(KEY_RIGHT, INPUT_PULLUP);
+  //delay(250); // Adafruit asks for 250ms to 'wait for oled power-up' ...
   if (CanRemote.quickAction())
     {
       if (digitalRead(KEY_CENTER) == LOW)
@@ -171,14 +175,17 @@ SC_GUI::init()
       SPI.begin(LUATOS_SCK, LUATOS_MISO, LUATOS_MOSI, LUATOS_SS);
       _display = new Adafruit_ST7735(&SPI, TFT_CS, TFT_DC, TFT_RST);
       ((Adafruit_ST7735 *)_display)->initR(INITR_MINI160x80); // Initialize ST7735R screen
+      _display->setRotation(2);
     }
   if (CanRemote.hwVersion() == HWVER2)
     {
       Wire.begin(LUATOS_SDA, LUATOS_SCL);
-      _display = new Adafruit_SH1107(128, 128, &Wire, -1, 1000000, 100000);
-      ((Adafruit_SH1107*)_display)->begin(0x3D, true);
+      //_display = new Adafruit_SH1107(64, 128, &Wire, -1, 1000000, 100000);
+      _display = new Adafruit_SH1107(64, 128, &Wire);
+      if (((Adafruit_SH1107*)_display)->begin(0x3C, true) == false)
+	Serial.println("Error Initializing OLED Screen!");
+      _display->setRotation(0);
     }
-  _display->setRotation(2);
   _display->setTextWrap(false); // Allow text to run off right edge
   this->clearScreen();
   _active = Menu.startNode();
@@ -229,6 +236,11 @@ SC_GUI::refresh()
 
   if (CanRemote.quickAction() == true)
     {
+      if (CanRemote.hwVersion() == HWVER2)
+	{
+	  _display->setTextColor(SH110X_WHITE);
+	  _display->setTextSize(1);
+	}
       key_center();
       return (true);
     }
@@ -243,13 +255,27 @@ SC_GUI::refresh()
 	;
       for (p = Menu.startNode(), i = 0; p; p = p->next(), i++)
 	{
-	  tomove = ((14 - p->key().length()) * 6) / 2;
-	  _display->setCursor(tomove, ((10 - (k % 10)) / 2 * 16) + (i + 1) * 16);
 	  if (CanRemote.hwVersion() == HWVER1)
-	    _display->setTextColor((p == _active ? WHITE_COLOR : DGREY_COLOR));
+	    {
+	      tomove = ((14 - p->key().length()) * 6) / 2;
+	      _display->setCursor(tomove, ((10 - (k % 10)) / 2 * 16) + (i + 1) * 16);
+	      _display->setTextColor((p == _active ? WHITE_COLOR : DGREY_COLOR));
+	    }
+	  else
+	    {
+	      tomove = ((11 - p->key().length()) * 6) / 2;
+	      _display->setCursor(tomove, (i + 1) * 14);
+	      if (p == _active)
+		_display->setTextColor(SH110X_BLACK, SH110X_WHITE);
+	      else
+		_display->setTextColor(SH110X_WHITE);
+	      //_display->setTextColor((p == _active ? SH110X_BLACK, SH110X_WHITE : SH110X_WHITE));
+	    }
 	  _display->setTextSize(1);
 	  _display->print(p->key());
 	}
+      if (CanRemote.hwVersion() == HWVER2)
+	((Adafruit_SH1107*)_display)->display();
       if (_forceUpdate)
 	{
 	  while (digitalRead(KEY_CENTER) == LOW)

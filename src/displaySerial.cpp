@@ -4,6 +4,7 @@ displaySerial::displaySerial()
 {
   _display = 0;
   _fbserial = 0;
+  _flushfct = 0;
 }
 
 displaySerial::~displaySerial()
@@ -23,7 +24,9 @@ displaySerial::print(const char c)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(c));
+  size_t res = _display->print(c);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -31,7 +34,9 @@ displaySerial::print(const String &s)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(s));
+  size_t res = _display->print(s);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -39,7 +44,9 @@ displaySerial::print(const char c[])
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(c));
+  size_t res = _display->print(c);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -47,7 +54,9 @@ displaySerial::print(unsigned char b, int base)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(b, base));
+  size_t res = _display->print(b, base);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -55,7 +64,9 @@ displaySerial::print(int num, int base)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(num, base));
+  size_t res = _display->print(num, base);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -63,7 +74,9 @@ displaySerial::print(unsigned int num, int base)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(num, base));
+  size_t res = _display->print(num, base);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -71,7 +84,9 @@ displaySerial::print(long num, int base)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(num, base));
+  size_t res = _display->print(num, base);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -79,14 +94,18 @@ displaySerial::print(unsigned long num, int base)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(num, base));
+  size_t res = _display->print(num, base);
+  this->flushScreen();
+  return (res);
 }
 
 size_t displaySerial::print(long long num, int base)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(num, base));
+  size_t res = _display->print(num, base);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -94,7 +113,9 @@ displaySerial::print(unsigned long long num, int base)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(num, base));
+  size_t res = _display->print(num, base);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
@@ -102,13 +123,16 @@ displaySerial::print(double num, int digits)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->print(num, digits));
+  size_t res = _display->print(num, digits);
+  this->flushScreen();
+  return (res);
 }
 
 size_t
 displaySerial::println(void)
 {
-    return print("\r\n");
+  size_t res = _display->print("\r\n");
+  return (res);
 }
 
 
@@ -208,7 +232,9 @@ displaySerial::write(uint8_t c)
 {
   if (displayEnable() == 0)
     return (0);
-  return (_display->write(c));
+  size_t res = _display->write(c);
+  this->flushScreen();
+  return (res);
 }
 
 int

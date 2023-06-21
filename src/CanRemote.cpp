@@ -1,5 +1,11 @@
 #include "CanGlobal.h"
 
+void	flushScreen()
+{
+  if (CanRemote.hwVersion() == HWVER2)
+    ((Adafruit_SH1107*)RemoteGUI.screen())->display();
+}
+
 CanRemote::CanRemote()
 {
 
@@ -44,6 +50,7 @@ CanRemote::init()
   RemoteGUI.init();
   shell = new espShell("RemoteSH", &Serial);
   SCSerial.begin(RemoteGUI.screen(), &Serial);
+  SCSerial.flushFunc(&flushScreen);
   shellScreen = new espShell("RemoteSH", &SCSerial);
   //shellLoRa = new espShell("RemoteSH", &Serial1, false, true);
 }
