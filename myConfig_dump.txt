@@ -1,0 +1,111 @@
+[RemoteSH: / ]> ls
+Directory Listing: /
+
+         FILE:          SIZE:
+        /etc/warnings.cfg       191
+        /etc/gps.cfg    97
+        /etc/Settings.cfg       115
+        /unlock.sh      37
+        /openboot.sh    36
+        /askGPS.sh      26
+        /sleepon.sh     26
+        /sleepoff.sh    27
+        /warnint.sh     107
+        /warnon.sh      56
+        /warnoff.sh     61
+        /warnstatus.sh  36
+        /doorstatus.sh  33
+        /savecfg.sh     43
+        /lock.sh        32
+        /lockall.sh     35
+        /etc/Menu.cfg   217
+        /readbatpin.sh  30
+        /etc/control.cfg        121
+        /battest.sh     32
+        /etc/Can.cfg    176
+[RemoteSH: / ]> cat /etc/warnings.cfg
+Interactive=exec warnint.sh
+Warnings On=exec warnon.sh
+Warnings Off=exec warnoff.sh
+Warnings Status=exec warnstatus.sh
+Back=menu load /etc/control.cfg
+Main Menu=menu load /etc/Menu.cfg
+[RemoteSH: / ]> cat /etc/gps.cfg
+Ask Position=exec askGPS.sh
+Back=menu load /etc/control.cfg
+Main Menu=menu load /etc/Menu.cfg
+[RemoteSH: / ]> cat /etc/Settings.cfg
+Sleep on=exec sleepon.sh
+Sleep off=exec sleepoff.sh
+Save Settings=exec savecfg.sh
+Back=menu load /etc/Menu.cfg
+[RemoteSH: / ]> cat /unlock.sh
+lorasend unlockall
+waitforkey 1000
+[RemoteSH: / ]> cat /openboot.sh
+lorasend openboot
+waitforkey 1000
+[RemoteSH: / ]> cat /askGPS.sh
+lorasend gps
+waitforkey
+[RemoteSH: / ]> cat /sleepon.sh
+sleep enable
+delay 1000
+[RemoteSH: / ]> cat /sleepoff.sh
+sleep disable
+delay 1000
+[RemoteSH: / ]> cat /warnint.sh
+lorasend warnings
+echo Press to Stop
+waitforkey
+lorasend stopwarning
+echo All Done !
+waitforkey 1000
+[RemoteSH: / ]> cat /warnstatus.sh
+lorasend warningstatus
+waitforkey
+[RemoteSH: / ]> cat /doorstatus.sh
+lorasend doorstatus
+waitforkey
+[RemoteSH: / ]> cat /savecfg.sh
+cfg save
+echo Config Saved !
+delay 1000
+[RemoteSH: / ]> cat /lock.sh
+lorasend lock
+waitforkey 1000
+[RemoteSH: / ]> cat /lockall.sh
+lorasend lockall
+waitforkey 1000
+[RemoteSH: / ]> cat /etc/Menu.cfg
+Lock=exec lock.sh
+LockAll=exec lockall.sh
+Unlock=exec unlock.sh
+Open Boot=exec openboot.sh
+Door Status=exec doorstatus.sh
+Control=menu load /etc/control.cfg
+Settings=menu load /etc/Settings.cfg
+Exit=sleep now
+[RemoteSH: / ]> cat /readbatpin.sh
+pin analogread 3
+waitforkey
+[RemoteSH: / ]> cat /etc/control.cfg
+Warnings=menu load /etc/warnings.cfg
+GPS=menu load /etc/gps.cfg
+BatTest=exec battest.sh
+Back=menu load /etc/Menu.cfg
+[RemoteSH: / ]> cat /battest.sh
+battery
+delay 500
+waitforkey
+[RemoteSH: / ]> cat /etc/Can.cfg
+ADCFactor=0.003833051
+QuickAction=true
+Sided=Left
+HWVersion=V2
+EnableSleep=true
+InactivityTimeout=20
+LoraCarKey=<REDACTED>
+LoraRemoteKey=<REDACTED>
+LoraSecure=true
+[RemoteSH: / ]>
