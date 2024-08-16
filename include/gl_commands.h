@@ -17,6 +17,7 @@ t_cmdfunc       gl_commands[] = {
   { "menu", "Graphical menu command listing", menu },
   { "pin", "pin input/output control", pin },
   { "sleep", "sleep status/management command", cmd_sleep },
+  { "battery", "show battery status", battery },
   { "free", "show free memory", cmd_free },
   { "echo", "echo text", echo },
   { "waitforkey", "waits for a keypress", waitforkey },

@@ -11,6 +11,7 @@
 # include <Adafruit_GFX.h>
 # include <Adafruit_SH110X.h>
 # include <Adafruit_ST7735.h>
+# include <driver/adc.h>
 # include "mbedtls/aes.h"
 # include "soc/soc.h"
 # include "soc/rtc_cntl_reg.h"
@@ -53,6 +54,9 @@
 # define LUATOS_LED2		GPIO_NUM_13
 # define LUATOS_SDA		GPIO_NUM_7
 # define LUATOS_SCL		GPIO_NUM_6
+
+# define BAT_ADC_PIN		GPIO_NUM_3
+# define BAT_ADC_MAXSAMPLES	5
 
 # define E220_PWR		GPIO_NUM_12
 # define E220_EN		GPIO_NUM_10

@@ -19,6 +19,10 @@ CanRemote::~CanRemote()
 void
 CanRemote::init()
 {
+  adc1_config_width(ADC_WIDTH_BIT_12);
+  //  adc1_config_channel_atten(ADC1_CHANNEL_0, ADC_ATTEN_DB_11);
+  adc1_config_channel_atten(ADC1_CHANNEL_3, ADC_ATTEN_DB_11);
+  //  adc1_config_channel_atten(ADC1_CHANNEL_4, ADC_ATTEN_DB_11);
   if (esp_sleep_get_wakeup_cause() == ESP_SLEEP_WAKEUP_UNDEFINED)
     _quickAction = false;
   else

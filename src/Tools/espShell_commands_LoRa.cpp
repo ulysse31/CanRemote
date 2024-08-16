@@ -163,7 +163,7 @@ bool	lorasend(espShell *sh, Stream *s, char **args)
       }
     else
       {
-	if ((millis() - time) > 5000) // keep in mind that if command takes more than this value without writing data ... connection will be closed
+	if ((millis() - time) > 10000) // keep in mind that if command takes more than this value without writing data ... connection will be closed
 	  {
 	    s->println("Error: lost in transaction");
 	    return (false);
@@ -250,7 +250,7 @@ bool	loraed(espShell *sh, Stream *s, char **args)
       }
     else
       {
-	if ((millis() - time) > 5000) // keep in mind that if command takes more than this value without writing data ... connection will be closed
+	if ((millis() - time) > 10000) // keep in mind that if command takes more than this value without writing data ... connection will be closed
 	  {
 	    s->println("Error: lost in transaction");
 	    break ;

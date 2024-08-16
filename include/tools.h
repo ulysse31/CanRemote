@@ -29,6 +29,7 @@ bool    serial(espShell *sh, Stream *s, char **args);
 bool    exec(espShell *sh, Stream *s, char **args);
 bool    cmd_delay(espShell *sh, Stream *s, char **args);
 bool    cmd_sleep(espShell *sh, Stream *s, char **args);
+bool    battery(espShell *sh, Stream *s, char **args);
 bool    cmd_free(espShell *sh, Stream *s, char **args);
 bool    echo(espShell *sh, Stream *s, char **args);
 bool    waitforkey(espShell *sh, Stream *s, char **args);

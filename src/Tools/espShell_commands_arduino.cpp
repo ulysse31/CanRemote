@@ -38,8 +38,25 @@ bool		pin_read(Stream *s, char **args)
   pin = args[2];
   s->print("Pin ");
   s->print(pin.toInt());
-  s->print(" is ");
+  s->print(": ");
   s->println((digitalRead(pin.toInt()) == HIGH ? "HIGH" : "LOW"));
+  return (true);
+}
+
+bool		pin_analogread(Stream *s, char **args)
+{
+  String	pin;
+
+  if (args[2] == 0)
+    {
+      s->println("Error: pin analogread <pin_num>");
+      return (false);
+    }
+  pin = args[2];
+  s->print("Pin ");
+  s->print(pin.toInt());
+  s->print(": ");
+  s->println(adc1_get_raw((adc1_channel_t)(pin.toInt())));
   return (true);
 }
 
@@ -66,6 +83,7 @@ t_genericcmd	gl_pincmd[] =
   {
     {"mode", pin_mode},
     {"read", pin_read},
+    {"analogread", pin_analogread},
     {"write", pin_write},
     {0, 0}
   };
@@ -75,13 +93,13 @@ bool	pin(espShell *sh, Stream *s, char **args)
 {
   if (args[1] == 0)
     {
-      s->println("Usage: pin [ mode <n> <INPUT|INPUT_PULLUP|OUTPUT> | read <n> | write <n> <HIGH|LOW> ]");
+      s->println("Usage: pin [ mode <n> <INPUT|INPUT_PULLUP|OUTPUT> | read <n> | analogread <n> | write <n> <HIGH|LOW> ]");
       return (false);
     }
   for (int i = 0; gl_pincmd[i].name; i++)
     if (strcmp(args[1], gl_pincmd[i].name) == 0)
       return(gl_pincmd[i].fct(s, args));
-  s->println("Usage: pin [ mode <n> <INPUT|INPUT_PULLUP|OUTPUT> | read <n> | write <n> <HIGH|LOW> ]");
+  s->println("Usage: pin [ mode <n> <INPUT|INPUT_PULLUP|OUTPUT> | read <n> | analogread <n> | write <n> <HIGH|LOW> ]");
   return (false);
 }
 
