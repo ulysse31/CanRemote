@@ -78,6 +78,7 @@ So it uses the same shell and config class, as well as a similar (but not exactl
   | interactive | LoRa | enable/disable shell "interactiveness" (echo, verbose) => the lora serial uses a non-interactive shell ... |
   | lorasend | LoRa | sends a command to distant lora shell |
   | lorasecure | LoRa | enable / disables authentication system on local listening lora shell |
+  | loraed | LoRa | edit distant file: calls distant "ed" editor with the given filename |
   
 ## System config
 A basic configuration file named /etc/Can.cfg on the SPIFFS contains all the common variable settings.  
