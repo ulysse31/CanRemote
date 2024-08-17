@@ -48,7 +48,7 @@ CanRemote::init()
       pinMode(E220_EN, OUTPUT);
       digitalWrite(E220_EN, LOW);
     }
-  Serial1.begin(LORA_SETUP_BAUD, SERIAL_8N1, LUATOS_RX1, LUATOS_TX1);
+  LORA_SERIAL.begin(LORA_SETUP_BAUD, SERIAL_8N1, LUATOS_RX1, LUATOS_TX1);
   Serial.begin(SERIAL_DEFAULT_SPEED);
   Serial.println("####################### CanRemote INIT #######################");
   RemoteGUI.init();
@@ -56,7 +56,7 @@ CanRemote::init()
   SCSerial.begin(RemoteGUI.screen(), &Serial);
   SCSerial.flushFunc(&flushScreen);
   shellScreen = new espShell("RemoteSH", &SCSerial);
-  //shellLoRa = new espShell("RemoteSH", &Serial1, false, true);
+  //shellLoRa = new espShell("RemoteSH", &LORA_SERIAL, false, true);
 }
 
 bool

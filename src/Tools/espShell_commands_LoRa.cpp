@@ -19,7 +19,7 @@ bool	lorashell(espShell *sh, Stream *s, char **args)
       return (false);
     }
   if (strcmp(args[1], "enable") == 0)
-    shellLoRa = new espShell("RemoteSH", &Serial1, false, true);
+    shellLoRa = new espShell("RemoteSH", &LORA_SERIAL, false, true);
   else
     {
       delete shellLoRa;
@@ -86,9 +86,9 @@ bool		loraAuth(espShell *sh, Stream *s)
   i = 0;
   time = millis();
   while (true)
-    if (Serial1.available())
+    if (LORA_SERIAL.available())
       {
-        buff[i] = ((char)Serial1.read());
+        buff[i] = ((char)LORA_SERIAL.read());
         i++;
         if (i == AUTH_TOKEN_SIZE)
           break ;
@@ -105,7 +105,7 @@ bool		loraAuth(espShell *sh, Stream *s)
   //showbuff(s, "\nDecrypt:", remote.token());
   remote.encryptWithRemote();
   //showbuffhex(s, "\nSending: ", remote.challenge());
-  Serial1.write(remote.challenge(), AUTH_TOKEN_SIZE);
+  LORA_SERIAL.write(remote.challenge(), AUTH_TOKEN_SIZE);
   return (true);
 }
 
@@ -126,24 +126,24 @@ bool	lorasend(espShell *sh, Stream *s, char **args)
       return (true);
     }
   len = strlen(args[1]);
-  Serial1.write("\r\n", 2);	// if asleep ... sending fake order to wake up
+  LORA_SERIAL.write("\r\n", 2);	// if asleep ... sending fake order to wake up
   delay(100);			// and wait a bit for it to get awake
-  while (Serial1.available())	// flushing any remaining bytes
-    c = Serial1.read();
-  Serial1.write(args[1], len);
-  Serial1.write("\r\n", 2);
+  while (LORA_SERIAL.available())	// flushing any remaining bytes
+    c = LORA_SERIAL.read();
+  LORA_SERIAL.write(args[1], len);
+  LORA_SERIAL.write("\r\n", 2);
   if (isSecure && loraAuth(sh, s) == false)
     {
       s->println("Error: Authentication Failed");
       return(false);
     }
   time = millis();
-  while (Serial1.available() == 0)
+  while (LORA_SERIAL.available() == 0)
     if ((millis() - time) > 1000)
       break ;
     else
       delay(10);
-  c  = ((char)Serial1.read());
+  c  = ((char)LORA_SERIAL.read());
   if (c != 0x04)
     {
       s->print("Error: No Answer (0x");
@@ -153,9 +153,9 @@ bool	lorasend(espShell *sh, Stream *s, char **args)
     }
   time = millis();
   while (true)
-    if (Serial1.available())
+    if (LORA_SERIAL.available())
       {
-	c = ((char)Serial1.read());
+	c = ((char)LORA_SERIAL.read());
 	if (c == 0x04)
 	  break ;
 	s->print(c);
@@ -192,12 +192,12 @@ bool	loraed(espShell *sh, Stream *s, char **args)
   initcmd = String("ed ");
   initcmd += args[1];
   len = strlen(initcmd.c_str());
-  Serial1.write("\r\n", 2);	// if asleep ... sending fake order to wake up
+  LORA_SERIAL.write("\r\n", 2);	// if asleep ... sending fake order to wake up
   delay(100);			// and wait a bit for it to get awake
-  while (Serial1.available())	// flushing any remaining bytes
-    c = Serial1.read();
-  Serial1.write(initcmd.c_str(), len);
-  Serial1.write("\r\n", 2);
+  while (LORA_SERIAL.available())	// flushing any remaining bytes
+    c = LORA_SERIAL.read();
+  LORA_SERIAL.write(initcmd.c_str(), len);
+  LORA_SERIAL.write("\r\n", 2);
   if (isSecure && loraAuth(sh, s) == false)
     {
       s->println("Error: Authentication Failed");
@@ -217,7 +217,7 @@ bool	loraed(espShell *sh, Stream *s, char **args)
       if (s->available())
 	{
 	  c = ((char)s->read());
-	  Serial1.write((uint8_t)c);
+	  LORA_SERIAL.write((uint8_t)c);
 	  if (c == 0x04 || c == 0x1B)
 	    break ;// end here
 	  s->print(c);
@@ -225,12 +225,12 @@ bool	loraed(espShell *sh, Stream *s, char **args)
       delay(10);
     }
   time = millis();
-  while (Serial1.available() == 0)
+  while (LORA_SERIAL.available() == 0)
     if ((millis() - time) > 1000)
       break ;
     else
       delay(10);
-  c  = ((char)Serial1.read());
+  c  = ((char)LORA_SERIAL.read());
   if (c != 0x04)
     {
       s->print("Error: No Answer (0x");
@@ -240,9 +240,9 @@ bool	loraed(espShell *sh, Stream *s, char **args)
     }
   time = millis();
   while (true)
-    if (Serial1.available())
+    if (LORA_SERIAL.available())
       {
-	c = ((char)Serial1.read());
+	c = ((char)LORA_SERIAL.read());
 	if (c == 0x04)
 	  break ;
 	s->print(c);
