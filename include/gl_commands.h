@@ -28,6 +28,7 @@ t_cmdfunc       gl_commands[] = {
   { "lorasend", "send command via lora", lorasend },
   { "lorasecure", "enable/disable auth in lorashell", lorasecure },
   { "lorashell", "enable/disable lorashell", lorashell },
+  { "loraed", "edit distant file via lora", loraed },
   { "restart", "restart the device", restart },
   {0, 0, 0}
 };

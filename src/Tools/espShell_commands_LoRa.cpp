@@ -145,12 +145,12 @@ bool	lorasend(espShell *sh, Stream *s, char **args)
       delay(10);
   c  = ((char)Serial1.read());
   if (c != 0x04)
-  {
-    s->print("Error: No Answer (0x");
-    s->print(c, HEX);
-    s->println(")");
-    return (false);
-  }
+    {
+      s->print("Error: No Answer (0x");
+      s->print(c, HEX);
+      s->println(")");
+      return (false);
+    }
   time = millis();
   while (true)
     if (Serial1.available())
@@ -232,12 +232,12 @@ bool	loraed(espShell *sh, Stream *s, char **args)
       delay(10);
   c  = ((char)Serial1.read());
   if (c != 0x04)
-  {
-    s->print("Error: No Answer (0x");
-    s->print(c, HEX);
-    s->println(")");
-    return (true);
-  }
+    {
+      s->print("Error: No Answer (0x");
+      s->print(c, HEX);
+      s->println(")");
+      return (true);
+    }
   time = millis();
   while (true)
     if (Serial1.available())

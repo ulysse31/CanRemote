@@ -52,10 +52,10 @@ bool		xmreceive(espShell *sh, Stream *s, char **args)
   return (true);
 }
 /*
-#define HEXLINE_BUFFSIZE	4
+  #define HEXLINE_BUFFSIZE	4
 
-bool		hexrecv(espShell *sh, Stream *s, char **args)
-{
+  bool		hexrecv(espShell *sh, Stream *s, char **args)
+  {
   String	line = "";
   File		fd;
   char		buff[HEXLINE_BUFFSIZE];
@@ -65,69 +65,69 @@ bool		hexrecv(espShell *sh, Stream *s, char **args)
   unsigned long	lasttime;
   
   if (args[1] == 0)
-    {
-      s->println("Usage: hexrecv <file>");
-      return (false);
-    }
+  {
+  s->println("Usage: hexrecv <file>");
+  return (false);
+  }
   if (args[1][0] == '/')
-    line = args[1];
+  line = args[1];
   else
-    {
-      line = sh->path();
-      line += args[1];
-    }
+  {
+  line = sh->path();
+  line += args[1];
+  }
   fd = SPIFFS.open(line.c_str(), "w");
   if (!fd)
-    {
-      s->print("Could not open file: ");
-      s->println(line.c_str());
-      return (false);
-    }
+  {
+  s->print("Could not open file: ");
+  s->println(line.c_str());
+  return (false);
+  }
   memset(buff, 0, HEXLINE_BUFFSIZE * sizeof(*buff));
   s->println("Starting data storage into file " + line);
   s->println("You can now send data with correct format with command `od -A x -v -t x1 <file> > /dev/ttyname`");
   s->println("Once ended, type <Ctrl+D> or Esc to close");
   lasttime = millis();
   while (true)
-    {
-      while((toread = s->available()) == 0)
-	;
-      if ((buff[0] = s->read()) == ' ')
-	arm = true;
-      if (buff[0] == 0x04 || buff[0] == 0x1B)
-	break ;
-      if ((millis() - lasttime) > 2000) // around every 2 secs
-	{
-	  lasttime = millis();
-	  s->print("\r");
-	  s->print(toread);
-	  s->print(" - ");
-	  s->print(totalwrite);
-	}
-      if (arm)
-	{
-	  while(s->available() == 0)
-	    ;
-	  buff[0] = s->read();
-	  while(s->available() == 0)
-	    ;
-	  buff[1] = s->read();
-	  long l;
-	  uint8_t e;
-	  l = strtol(buff, NULL, 16);
-	  e = ((uint8_t)l);
-	  fd.write(e);
-	  arm = false;
-	  buff[0] = 0;
-	  buff[1] = 0;
-	  totalwrite++;
-	}
-    }
+  {
+  while((toread = s->available()) == 0)
+  ;
+  if ((buff[0] = s->read()) == ' ')
+  arm = true;
+  if (buff[0] == 0x04 || buff[0] == 0x1B)
+  break ;
+  if ((millis() - lasttime) > 2000) // around every 2 secs
+  {
+  lasttime = millis();
+  s->print("\r");
+  s->print(toread);
+  s->print(" - ");
+  s->print(totalwrite);
+  }
+  if (arm)
+  {
+  while(s->available() == 0)
+  ;
+  buff[0] = s->read();
+  while(s->available() == 0)
+  ;
+  buff[1] = s->read();
+  long l;
+  uint8_t e;
+  l = strtol(buff, NULL, 16);
+  e = ((uint8_t)l);
+  fd.write(e);
+  arm = false;
+  buff[0] = 0;
+  buff[1] = 0;
+  totalwrite++;
+  }
+  }
   s->print("\nTotal written bytes: ");
   s->println(totalwrite);
   fd.close();
   return (true);
-}
+  }
 */
 bool		fwupdate(espShell *sh, Stream *s, char **args)
 {
@@ -180,8 +180,8 @@ bool		fwupdate(espShell *sh, Stream *s, char **args)
 
 bool		restart(espShell *sh, Stream *s, char **args)
 {
-   ESP.restart();
-   return (true);
+  ESP.restart();
+  return (true);
 }
 
 bool		interactive(espShell *sh, Stream *s, char **args)

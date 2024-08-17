@@ -26,7 +26,7 @@ bool		cat(espShell *sh, Stream *s, char **args)
       return (false);
     }
   while (fd.available())
-      s->write(fd.read());
+    s->write(fd.read());
   fd.close();
   return (true);
 }
@@ -186,11 +186,11 @@ bool		cp(espShell *sh, Stream *s, char **args)
       s->print("Could not open file: ");
       s->println(line2.c_str());
       if (fd)
-      fd.close();
+	fd.close();
       return (false);
     }
   while (fd.available())
-      fd2.write(fd.read());
+    fd2.write(fd.read());
   fd.close();
   fd2.close();
   return (true);
@@ -215,21 +215,21 @@ bool    mv(espShell *sh, Stream *s, char **args)
       line = sh->path();
       line += args[1];
     }
-    if (args[2][0] == '/')
+  if (args[2][0] == '/')
     line2 = args[2];
   else
     {
       line2 = sh->path();
       line2 += args[2];
     }
-    if (SPIFFS.rename(line.c_str(), line2.c_str()) == false)
-      {
-	s->print("Could not rename ");
-	s->print(line.c_str());
-	s->print(" into ");
-	s->println(line2.c_str());
-	return (false);
-      }
+  if (SPIFFS.rename(line.c_str(), line2.c_str()) == false)
+    {
+      s->print("Could not rename ");
+      s->print(line.c_str());
+      s->print(" into ");
+      s->println(line2.c_str());
+      return (false);
+    }
   return (true);
 }
 

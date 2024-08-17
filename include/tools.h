@@ -21,6 +21,7 @@ bool    ifconfig(espShell *sh, Stream *s, char **args);
 bool    lorasend(espShell *sh, Stream *s, char **args);
 bool    lorasecure(espShell *sh, Stream *s, char **args);
 bool    lorashell(espShell *sh, Stream *s, char **args);
+bool    loraed(espShell *sh, Stream *s, char **args);
 bool    cfg(espShell *sh, Stream *s, char **args);
 bool    alias(espShell *sh, Stream *s, char **args);
 bool    menu(espShell *sh, Stream *s, char **args);
