@@ -4,6 +4,8 @@
 ###  DO IT AT YOUR OWN RISK !!!
 ###  END DISCLAIMER
   
+This project goes with https://github.com/ulysse31/CanCarControl
+
 LoRa based remote control for sending messages to a CAN-Bus enabled car, equiped with a LoRa receiver.  
 This project uses the same approach as the CanCarControl: a command line shell and config based file setup.  
 The goal of this project is to play with the car, with a "DIY"/"Homemade" remote (other repo) in order to do stuff such as:  
