@@ -47,6 +47,7 @@ Remote Control that goes in par with CanCarControl project:
 
 https://github.com/ulysse31/CanCarControl
 
+In this version, and for now, the battery sensing (which is for now being tested) is not correctly implemented: do NOT solder R220K resistor for now.
 
 ## How it works
 As said earlier, this project is re-using the same code base as the CanCarControl project, since its aim is to communicate with it.  
