@@ -4,7 +4,7 @@
 ###  DO IT AT YOUR OWN RISK !!!
 ###  END DISCLAIMER
   
-This project goes with https://github.com/ulysse31/CanCarControl
+This project goes with [CanCarControl Project](https://github.com/ulysse31/CanCarControl)
 
 LoRa based remote control for sending messages to a CAN-Bus enabled car, equiped with a LoRa receiver.  
 This project uses the same approach as the CanCarControl: a command line shell and config based file setup.  
@@ -29,9 +29,7 @@ This project uses the following parts :
 * A multi-directional wheel type button (eg: K1-1502SA-01 or other)
  
  
-schematics for this DEV version remote are available here :
- 
-https://oshwlab.com/ulysse31/canremotebrick
+schematics for this DEV version remote are available [here](https://oshwlab.com/ulysse31/canremotebrick)
 
 This DEV version do NOT uses any PCB *on its own*, all parts are actually soldered with wires and tapped together
 
@@ -41,13 +39,9 @@ IT IS IMPOSSIBLE TO POWER OFF THE BACKLIGHT OF THE TFT => which is of course a t
 
 The final version uses a 4 pin I2C OLED screen (SH1107).  
 
-PCB + Schematics for the final version is available here:  
+PCB + Schematics for the final version is available [here](https://oshwlab.com/ulysse31/canremotebrickv2_copy_copy_copy_copy)
 
-https://oshwlab.com/ulysse31/canremotebrickv2_copy_copy_copy
-
-Remote Control that goes in par with CanCarControl project:  
-
-https://github.com/ulysse31/CanCarControl
+Remote Control that goes in par with [CanCarControl Project](https://github.com/ulysse31/CanCarControl)
 
 In this version, and for now, the battery sensing (which is for now being tested) is not correctly implemented: do NOT solder R220K resistor for now.
 
